@@ -1,0 +1,38 @@
+version: "3.0"
+services:
+    redis:
+        image: "redis"
+        volumes:
+          - /some/path/zoomtodrive:/var/cache/zoomtodrive
+
+    zoomtodrive_rq:
+        image: "zoomtodrive"
+        command: rq worker --url redis://redis:6379 zoomtodrive
+        volumes:
+          - /some/path/zoomtodrive:/var/cache/zoomtodrive
+        depends_on:
+         - redis
+
+    zoomtodrive_flask:
+        image: "zoomtodrive"
+        command: uwsgi uwsgi.ini 
+        ports:
+          - 9090:9090
+        environment:
+          - "ZOOM_CLIENT_ID=secret"
+          - "ZOOM_CLIENT_SECRET=secret"
+          - "REDIS_URL=redis://redis:6379"
+          - "REDIS_QUEUE=zoomtodrive"
+          - "FLASK_SECRET_KEY=secret"
+          - "FLASK_APP=zoomtodrive.py"
+            # Disable OAuthlib's HTTPs verification when running on localhost
+          - "OAUTHLIB_INSECURE_TRANSPORT=1"
+            # Do not leave this option enabled when running in production
+          - "FLASK_ENV=development"
+        volumes:
+          - /some/path/zoomtodrive:/var/cache/zoomtodrive
+          - /some/other/path/zoomtodrive/client_secret.json:/srv/zoomtodrive/client_secret.json
+        depends_on:
+          - redis
+          - zoomtodrive_rq
+
