@@ -529,11 +529,10 @@ def format_recording_filename(f):
     if not t:
         return f'{start}.'
     ext = {
-        'MP4':'mp4',
-        'M4A': 'm4a',
         'TIMELINE': 'json',
-        'TRANSCRIPT':'vtt'
-    }[t]
+        'TRANSCRIPT':'vtt',
+        'CHAT':'chat.txt',
+    }.get(t, t.lower())
     if not i:
         return f'{start}.{ext}'
     else:
