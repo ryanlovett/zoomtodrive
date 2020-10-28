@@ -673,6 +673,5 @@ def main_view():
     )
 
 if __name__ == '__main__':
-    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = 1
     port = int(os.environ.get('FLASK_PORT', '5000'))
     app.run('0.0.0.0', port=port, debug=True)
