@@ -56,21 +56,7 @@ function set_drive_files(jQuery) {
     });
 }
 
-/* retrieve a list of locally cached files and populate a select list */
-function set_cache_files(jQuery) {
-    var select = $('#local-select');
-    var el;
-    $.get("cache/files", function(data) {
-        select.empty(); /* clear select */
-        for (var i=0; f=data[i]; i++) {
-            /* append an <option/> for each file */
-            el = document.createElement("option");
-            el.appendChild(document.createTextNode(f));
-            select.append(el);
-        }
-    });
-}
-/* retrieve a list of locally cached files and populate a select list */
+/* retrieve a list of zoom recording files and populate a select list */
 function set_zoom_files(jQuery) {
     var select = $('#zoom-select');
     var el;
@@ -83,26 +69,6 @@ function set_zoom_files(jQuery) {
             select.append(el);
         }
     });
-}
-
-/* disable files in cache and drive lists if they exist in both */
-function set_select_states(jQuery) {
-    var drive_file_options = $('#google-select').find('option');
-    var option;
-    var drive_filenames = [];
-    for (i=0; option=drive_file_options[i]; i++) {
-        drive_filenames.push(option.text);
-    }
-
-    var local_file_options = $('#local-select').find('option');
-    var drive_index;
-    for (i=0; option=local_file_options[i]; i++) {
-        drive_index = drive_filenames.indexOf(option.text);
-        if (drive_index >= 0) {
-            console.log("found " + option.text);
-            local_file_options[i].disabled = true;
-        }
-    }
 }
 
 $(document).ready(set_zoom_files); 
