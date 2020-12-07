@@ -191,7 +191,6 @@ def get_drive_files(folder_id):
 
     return sorted(files, key = lambda x: x['name'])
 
-#@app.route('/google/upload', methods=['GET', 'POST'])
 def google_upload():
     '''Upload files from local cache to Google Drive.'''
     directory = get_cache_directory()
@@ -312,7 +311,6 @@ def google_oauth2callback():
     flask.session.modified = True
 
     return flask.redirect(flask.url_for('main_view'))
-
 
 @app.route('/google/revoke')
 def google_revoke():
